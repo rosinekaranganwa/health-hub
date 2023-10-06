@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_hub/home.dart';
+import 'package:health_hub/screen/home.dart';
 
 void main() {
   runApp(const MyApp());
