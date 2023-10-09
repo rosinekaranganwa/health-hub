@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:health_hub/screen/authentication/sign_up.dart';
-class Login extends StatefulWidget {
-  const Login({super.key});
+import 'package:health_hub/screen/authentication/login.dart';
+
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
   late Color myColor;
   late Size mediaSize;
   bool _showPassword = false;
@@ -21,12 +22,12 @@ class _LoginState extends State<Login> {
     mediaSize=MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFF0492C2,),
-        image: DecorationImage(
-          image: AssetImage("assets/images/logo.png"),
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(myColor.withOpacity(0.2), BlendMode.dstATop)
-        )
+          color: Color(0xFF0492C2,),
+          image: DecorationImage(
+              image: AssetImage("assets/images/logo.png"),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(myColor.withOpacity(0.2), BlendMode.dstATop)
+          )
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -59,10 +60,10 @@ class _LoginState extends State<Login> {
       width: mediaSize.width,
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30)
-          )
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30)
+            )
         ),
         child: Padding(
           padding: EdgeInsets.all(32.0),
@@ -75,18 +76,30 @@ class _LoginState extends State<Login> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Login Here",
+        Text("SignUp Here",
           style:TextStyle(
-            color: Color(0xFF0492C2,
-            ),
-            fontSize: 32,
-            fontWeight: FontWeight.w500
+              color: Color(0xFF0492C2,
+              ),
+              fontSize: 32,
+              fontWeight: FontWeight.w500
           ) ,),
-        Text("Please Login with your information",
+        Text("Please SignUp with your information",
           style: TextStyle(
-            color: Colors.grey
+              color: Colors.grey
           ),),
         SizedBox(height: 40,),
+        TextField(
+          controller: emailController,
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            hintText: 'Phone',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
         TextField(
           controller: emailController,
           decoration: InputDecoration(
@@ -99,7 +112,7 @@ class _LoginState extends State<Login> {
           ),
         ),
         SizedBox(
-          height: 30,
+          height: 20,
         ),
         TextFormField(
           controller: passwordController,
@@ -123,69 +136,58 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
-        SizedBox(height: 30,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Checkbox(
-                    value: rememberUser,
-                    onChanged: (value){
-                      setState(() {
-                        rememberUser=value!;
-                      });
-                    }),
-                Text("Remember me"),
-              ],
-            ),
-            TextButton(
-                onPressed: (){},
-                child: Text("I forgot my password",
-                  style: TextStyle(
-                    color: Color(0xFF0492C2)
-                  ),))
-          ],
+        SizedBox(
+          height: 20,
         ),
-        SizedBox(height: 30,),
-        ElevatedButton(
-            onPressed: (){
-              debugPrint("Email : ${emailController.text}");
-              debugPrint("Password : ${passwordController.text}");
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
-            },
-            style: ElevatedButton.styleFrom(
-              shape: StadiumBorder(),
-              elevation: 20,
-              shadowColor: Color(0xFF0492C2),
-              minimumSize: Size.fromHeight(60),
+        TextFormField(
+          controller: passwordController,
+          obscureText: !_showPassword,
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            hintText: 'Confirm Password',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-          child: Text("LOGIN",
+            suffixIcon: IconButton(
+              icon: Icon(
+                _showPassword ? Icons.visibility : Icons.visibility_off,
+              ),
+              onPressed: () {
+                setState(() {
+                  _showPassword = !_showPassword;
+                });
+              },
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
+        ElevatedButton(
+          onPressed: (){
+            debugPrint("Email : ${emailController.text}");
+            debugPrint("Password : ${passwordController.text}");
+          },
+          style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            elevation: 20,
+            shadowColor: Color(0xFF0492C2),
+            minimumSize: Size.fromHeight(60),
+          ),
+          child: Text("SIGNUP",
             style: TextStyle(color: Color(0xFF0492C2)),),
         ),
         SizedBox(height: 20,),
         Column(
           children: [
-            Text('Or Login With',style: TextStyle(color: Color(0xFF0492C2)),),
-            SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Tab(icon: Image.asset("assets/images/facebook.png"),),
-                Tab(icon: Image.asset("assets/images/twitter.png"),),
-                Tab(icon: Image.asset("assets/images/github.png"),)
-              ],
-            ),
-            SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                     onPressed: (){
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context)=> SignUp()));
+                          MaterialPageRoute(builder: (context)=> Login()));
                     },
-                    child: Text("Sign Up",
+                    child: Text("Login",
                       style: TextStyle(
                           color: Color(0xFF0492C2)
                       ),))
