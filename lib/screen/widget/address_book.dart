@@ -39,7 +39,94 @@ class _AddressBookState extends State<AddressBook> {
                 ),
               ],
             ),
-          )
+          ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0,right: 15.0,top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF0492C2),
+                        borderRadius: BorderRadius.circular(5)
+                      ),
+                      child: Center(
+                          child: Text("Find Address",style: TextStyle(color: Colors.white,fontSize: 18),)),
+                    ),
+                    Container(
+                      width: 150,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Color(0xFF0492C2),
+                          borderRadius: BorderRadius.circular(5)
+                      ),
+                      child: Center(
+                          child: Text("Current Location",style: TextStyle(color: Colors.white,fontSize: 18),)),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0,right: 15.0,top: 20),
+                child: TextFormField(
+                  initialValue:'KG 219 Street,Remera,Kigali',
+                  // initialValue: 'Delivery Street',
+                  decoration: InputDecoration(
+                    labelText: 'Delivery Street',
+                    // labelText: '',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0,right: 15.0,top: 20),
+                child: TextFormField(
+                  initialValue:'KG 219 Street',
+                  // initialValue: 'Delivery Street',
+                  decoration: InputDecoration(
+                    labelText: 'Area Name',
+                    // labelText: '',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0,right: 15.0,top: 20),
+                child: TextFormField(
+                  initialValue:'0780022601',
+                  // initialValue: 'Delivery Street',
+                  decoration: InputDecoration(
+                    labelText: 'Local Contact Number',
+                    // labelText: '',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0,right: 15.0,top: 20),
+                child: TextField(
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'House Number',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+        ),
 
       ),
     );
