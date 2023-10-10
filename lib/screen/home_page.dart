@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_hub/screen/widget/tab_bar_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,7 +38,12 @@ class _HomePageState extends State<HomePage> {
                 fontWeight: FontWeight.w400
               ),),
           ),
-          
+          Expanded(
+            child: ListTile(
+              title: Text("Address Usage Option",style: TextStyle(fontSize: 14),),
+              subtitle: CustomTabBar(),
+            ),
+          ),
         ],
       ),
     );

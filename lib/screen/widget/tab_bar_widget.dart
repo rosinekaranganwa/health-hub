@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_hub/screen/widget/remember_address.dart';
 
 class CustomTabBar extends StatefulWidget {
   const CustomTabBar({super.key});
@@ -34,14 +35,15 @@ class _CustomTabBarState extends State<CustomTabBar> {
                   unselectedLabelColor: Color(0xFF0492C2),
                   indicator: BoxDecoration(
                     color: Color(0xFF0492C2),
+                    borderRadius: BorderRadius.circular(5)
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
                   tabs: const [
                     Tab(
-                      text: 'Basic',
+                      text: 'Remember',
                     ),
                     Tab(
-                      text: 'Advanced',
+                      text: 'Always Ask',
                     )
                   ],
                 ),
@@ -51,7 +53,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
         ),
         body: TabBarView(
           children: [
-            Text('Remember'),
+            RememberAddress(),
             Text("Always ask")
           ],
         ),
