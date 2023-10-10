@@ -8,6 +8,8 @@ class AddressBook extends StatefulWidget {
 }
 
 class _AddressBookState extends State<AddressBook> {
+  bool isSelected1 = false;
+  bool isSelected2 = false;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -121,6 +123,74 @@ class _AddressBookState extends State<AddressBook> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
+                ),
+              ),
+              SizedBox(height: 30,),
+              ListTile(
+                title: Text("Address Usage Option:",style: TextStyle(fontSize: 14),),
+              ),
+              ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isSelected1 = true;
+                          isSelected2 = false;
+                        });
+                      },
+                      child: Container(
+                        width: 150,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: isSelected1 ? Colors.blue :  Color(0xFFF0EFE7),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            bottomLeft: Radius.circular(5),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Find Address",
+                            style: TextStyle(
+                              color: isSelected1 ? Colors.white : Color(0xFF0492C2),
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isSelected1 = false;
+                          isSelected2 = true;
+                        });
+                      },
+                      child: Container(
+                        width: 150,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: isSelected2 ? Colors.blue : Color(0xFFF0EFE7),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(5),
+                            bottomRight: Radius.circular(5),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Current Location",
+                            style: TextStyle(
+                              color: isSelected2 ? Colors.white : Color(0xFF0492C2),
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
