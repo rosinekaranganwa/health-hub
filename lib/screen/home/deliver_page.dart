@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_hub/screen/home/order.dart';
 import 'package:health_hub/screen/home/search.dart';
 import 'package:health_hub/screen/home/store.dart';
 
@@ -23,7 +24,7 @@ class _DeliverPageState extends State<DeliverPage> {
   void _onPageChanged(int index) {
     setState(() {
       _currentPageIndex = index;
-      showAppBar = index != 1;
+      showAppBar = index != 1 && index !=2;
     });
   }
 
@@ -47,7 +48,7 @@ class _DeliverPageState extends State<DeliverPage> {
         children: <Widget>[
           Store(),
           Search(),
-          Center(child: Text("Orders Page")),
+          Orders(),
           Center(child: Text("Cart Page")),
           Center(child: Text("More Page")),
         ],

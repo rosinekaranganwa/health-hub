@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_hub/screen/home/deliver_page.dart';
+import 'package:health_hub/screen/home/cart.dart';
 
 
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  DeliverPage()
+      home:  Cart()
     );
   }
 }
