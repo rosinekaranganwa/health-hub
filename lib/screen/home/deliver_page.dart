@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_hub/screen/home/store.dart';
 
 class DeliverPage extends StatefulWidget {
   const DeliverPage({Key? key});
@@ -38,8 +39,7 @@ class _DeliverPageState extends State<DeliverPage> {
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: <Widget>[
-          // Add your pages here
-          Center(child: Text("Store Front Page")),
+          Store(),
           Center(child: Text("Search Page")),
           Center(child: Text("Orders Page")),
           Center(child: Text("Cart Page")),
