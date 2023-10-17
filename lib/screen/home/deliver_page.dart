@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_hub/screen/home/search.dart';
 import 'package:health_hub/screen/home/store.dart';
 
 class DeliverPage extends StatefulWidget {
@@ -11,6 +12,7 @@ class DeliverPage extends StatefulWidget {
 class _DeliverPageState extends State<DeliverPage> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
+  bool showAppBar = true;
 
   @override
   void dispose() {
@@ -21,26 +23,30 @@ class _DeliverPageState extends State<DeliverPage> {
   void _onPageChanged(int index) {
     setState(() {
       _currentPageIndex = index;
+      showAppBar = index != 1;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF0EFE7),
-      appBar: AppBar(
+      appBar: showAppBar
+          ? AppBar(
         title: ListTile(
           title: Text("Deliver To:", style: TextStyle(color: Colors.white)),
           subtitle: Text("KG219 St, Kigali", style: TextStyle(color: Colors.white)),
         ),
         backgroundColor: Color(0xFF0492C2),
-      ),
+      )
+          : null,
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: <Widget>[
           Store(),
-          Center(child: Text("Search Page")),
+          Search(),
           Center(child: Text("Orders Page")),
           Center(child: Text("Cart Page")),
           Center(child: Text("More Page")),
