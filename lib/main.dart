@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:health_hub/screen/home/deliver_page.dart';
-import 'package:health_hub/screen/home/options.dart';
-
-
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  Options()
+      home:  DeliverPage()
     );
   }
 }

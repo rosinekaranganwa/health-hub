@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_hub/screen/home/cart.dart';
+import 'package:health_hub/screen/home/options.dart';
 import 'package:health_hub/screen/home/order.dart';
 import 'package:health_hub/screen/home/search.dart';
 import 'package:health_hub/screen/home/store.dart';
@@ -25,7 +26,7 @@ class _DeliverPageState extends State<DeliverPage> {
   void _onPageChanged(int index) {
     setState(() {
       _currentPageIndex = index;
-      showAppBar = index != 1 && index !=2 && index !=3;
+      showAppBar = index != 1 && index !=2 && index !=3 && index !=4;
     });
   }
 
@@ -51,7 +52,7 @@ class _DeliverPageState extends State<DeliverPage> {
           Search(),
           Orders(),
           Cart(),
-          Center(child: Text("More Page")),
+          Options(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

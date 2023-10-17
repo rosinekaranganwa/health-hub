@@ -18,66 +18,66 @@ class _OptionsState extends State<Options> {
       ),
       body: Column(
         children: [
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                  },
-                  child: Container(
-                    width: 150,
-                    height: 50,
-                    decoration:BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.grey,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "All",
-                      ),
-                    ),
-                  ),
+          SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                width: 110,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(5)
                 ),
-                SizedBox(width: 10),
-                GestureDetector(
-                  onTap: () {
-                  },
-                  child: Container(
-                    width: 150,
-                    height: 50,
-                    decoration:BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.grey,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Lab Tests",
-                      ),
-                    ),
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.wallet),
+                    Text("Wallet")
+                  ],
                 ),
-                SizedBox(width: 10),
-                GestureDetector(
-                  onTap: () {
-                  },
-                  child: Container(
-                    width: 150,
-                    height: 50,
-                    decoration:BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.grey,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Lab Tests",
-                      ),
-                    ),
-                  ),
                 ),
-              ],
-            ),
+              Container(
+                width: 110,
+                height: 100,
+                decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.bookmark_add_sharp),
+                    Text("Address Book")
+                  ],
+                ),
+              ),
+              Container(
+                width: 110,
+                height: 100,
+                decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.person),
+                    Text("Profile")
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+
           ),
         ],
       ),
