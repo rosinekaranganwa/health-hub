@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:health_hub/screen/authentication/sign_up.dart';
+import 'package:health_hub/screen/home/deliver_page.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/authentication/login_model.dart';
+import '../../providers/authentication/login_provider.dart';
+import '../../providers/prefs/preferences.dart';
 import '../home_page.dart';
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,9 +18,71 @@ class _LoginState extends State<Login> {
   late Color myColor;
   late Size mediaSize;
   bool _showPassword = false;
-  TextEditingController emailController=TextEditingController();
+  bool isLoading=false;
+  final _formKey=GlobalKey<FormState>();
+  TextEditingController phoneNumberController=TextEditingController();
   TextEditingController passwordController=TextEditingController();
   bool rememberUser=false;
+  String? _phoneNumberError;
+  String? _passwordError;
+  String? storedToken;
+  bool loginFailed = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      initPrefs();
+    });
+    super.initState();
+  }
+
+  initPrefs() async {
+    var preferenceProvider = Provider.of<PreferencesProvider>(context, listen: false);
+    await preferenceProvider.init();
+    var token = preferenceProvider.getToken();
+    if (token != null) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+  }
+
+
+  loginButton() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+
+      final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+      final loginData = LoginModel(
+        phone_number: phoneNumberController.text,
+        password: passwordController.text,
+      );
+
+      var response = await loginProvider.login(loginData);
+      if (response.success) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Login Error'),
+              content: Text(response.message),
+              actions: [
+                ElevatedButton(
+                    onPressed:(){
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'))
+              ],
+            ));
+        // showSnackbar(context, response.message);
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,128 +141,153 @@ class _LoginState extends State<Login> {
     );
   }
   Widget _buildForm(){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Login Here",
-          style:TextStyle(
-            color: Color(0xFF0492C2,
-            ),
-            fontSize: 32,
-            fontWeight: FontWeight.w500
-          ) ,),
-        Text("Please Login with your information",
-          style: TextStyle(
-            color: Colors.grey
-          ),),
-        SizedBox(height: 40,),
-        TextField(
-          controller: emailController,
-          decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Email',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        TextFormField(
-          controller: passwordController,
-          obscureText: !_showPassword,
-          decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Password',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            suffixIcon: IconButton(
-              icon: Icon(
-                _showPassword ? Icons.visibility : Icons.visibility_off,
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Login Here",
+            style:TextStyle(
+              color: Color(0xFF0492C2,
               ),
-              onPressed: () {
-                setState(() {
-                  _showPassword = !_showPassword;
-                });
-              },
+              fontSize: 32,
+              fontWeight: FontWeight.w500
+            ) ,),
+          Text("Please Login with your information",
+            style: TextStyle(
+              color: Colors.grey
+            ),),
+          SizedBox(height: 40,),
+          TextFormField(
+            controller: phoneNumberController,
+            decoration: InputDecoration(
+              hintText: 'Phone Number',
+              hintStyle: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-          ),
-        ),
-        SizedBox(height: 30,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Checkbox(
-                    value: rememberUser,
-                    onChanged: (value){
-                      setState(() {
-                        rememberUser=value!;
-                      });
-                    }),
-                Text("Remember me"),
-              ],
-            ),
-            TextButton(
-                onPressed: (){},
-                child: Text("I forgot my password",
-                  style: TextStyle(
-                    color: Color(0xFF0492C2)
-                  ),))
-          ],
-        ),
-        SizedBox(height: 30,),
-        ElevatedButton(
-            onPressed: (){
-              debugPrint("Email : ${emailController.text}");
-              debugPrint("Password : ${passwordController.text}");
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter your phone';
+              }
+              return null;
             },
-            style: ElevatedButton.styleFrom(
-              shape: StadiumBorder(),
-              elevation: 20,
-              shadowColor: Color(0xFF0492C2),
-              minimumSize: Size.fromHeight(60),
+            onChanged: (value) {
+              setState(() {
+                _phoneNumberError = null;
+              });
+            },
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          TextFormField(
+            controller: passwordController,
+            obscureText: !_showPassword,
+            decoration: InputDecoration(
+              hintText: 'Password',
+              hintStyle: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    _showPassword = !_showPassword;
+                  });
+                },
+              ),
             ),
-          child: Text("LOGIN",
-            style: TextStyle(color: Color(0xFF0492C2)),),
-        ),
-        SizedBox(height: 20,),
-        Column(
-          children: [
-            Text('Or Login With',style: TextStyle(color: Color(0xFF0492C2)),),
-            SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Tab(icon: Image.asset("assets/images/facebook.png"),),
-                Tab(icon: Image.asset("assets/images/twitter.png"),),
-                Tab(icon: Image.asset("assets/images/github.png"),)
-              ],
-            ),
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                    onPressed: (){
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context)=> SignUp()));
-                    },
-                    child: Text("Sign Up",
-                      style: TextStyle(
-                          color: Color(0xFF0492C2)
-                      ),))
-              ],
-            ),
-          ],
-        ),
-      ],
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter your password';
+              }
+              return null;
+            },
+            onChanged: (value) {
+              setState(() {
+                _passwordError = null;
+              });
+            },
+          ),
+          SizedBox(height: 30,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Checkbox(
+                      value: rememberUser,
+                      onChanged: (value){
+                        setState(() {
+                          rememberUser=value!;
+                        });
+                      }),
+                  Text("Remember me"),
+                ],
+              ),
+              TextButton(
+                  onPressed: (){},
+                  child: Text("I forgot my password",
+                    style: TextStyle(
+                      color: Color(0xFF0492C2)
+                    ),))
+            ],
+          ),
+          SizedBox(height: 30,),
+          ElevatedButton(
+            onPressed: isLoading ? null : loginButton,
+            child: isLoading
+                ?CircularProgressIndicator()
+                :Text("LOGIN",
+              style: TextStyle(color: Color(0xFF0492C2)),),
+              style: ElevatedButton.styleFrom(
+                shape: StadiumBorder(),
+                elevation: 20,
+                shadowColor: Color(0xFF0492C2),
+                minimumSize: Size.fromHeight(60),
+              ),
+          ),
+          SizedBox(height: 20,),
+          Column(
+            children: [
+              Text('Or Login With',style: TextStyle(color: Color(0xFF0492C2)),),
+              SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Tab(icon: Image.asset("assets/images/facebook.png"),),
+                  Tab(icon: Image.asset("assets/images/twitter.png"),),
+                  Tab(icon: Image.asset("assets/images/github.png"),)
+                ],
+              ),
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                      onPressed: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context)=> SignUp()));
+                      },
+                      child: Text("Sign Up",
+                        style: TextStyle(
+                            color: Color(0xFF0492C2)
+                        ),))
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
+
+
