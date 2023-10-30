@@ -1,8 +1,8 @@
 class LabTest {
-  final int id;
-  final String name;
-  final String description;
-  final String image;
+  int id;
+  String name;
+  String description;
+  String image;
 
   LabTest({
     required this.id,
@@ -10,22 +10,4 @@ class LabTest {
     required this.description,
     required this.image,
   });
-
-  factory LabTest.fromJson(Map<String, dynamic> json) {
-    return LabTest(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      image: json['image'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'description': description,
-      'image': image,
-    };
-  }
 }

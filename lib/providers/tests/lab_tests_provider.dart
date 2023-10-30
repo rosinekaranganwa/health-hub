@@ -1,16 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:health_hub/constant/api_constant.dart';
-import 'package:health_hub/models/tests/lab_tests_model.dart';
 
-class GetLabTestProvider with ChangeNotifier{
-  List<LabTest> _labTests=[];
+import '../../models/tests/lab_tests_model.dart';
+
+class GetLabTestProvider with ChangeNotifier {
+  List<LabTest> _labTests = [];
   final Dio _dio = Dio();
+  bool isLoading = false;
 
   List<LabTest> get labTests => _labTests;
 
-  Future<List<LabTest>> fetchLabTests() async {
-    debugPrint("In request");
+  GetLabTestProvider() {
+    _dio.options.headers['Accept'] = 'application/json';
+    _dio.options.followRedirects = true;
+  }
+
+  Future<void> getAllLabTest() async {
+    isLoading = true;
     try {
       final response = await _dio.get(
         '${apiBaseUrl}/api/labTests/',
@@ -20,29 +27,66 @@ class GetLabTestProvider with ChangeNotifier{
           },
         ),
       );
-      print('Response received: ${response.statusCode}');
-
       if (response.statusCode == 200) {
-        final List<dynamic> dataList = response.data;
-        if (dataList != null) {
-          _labTests = dataList.map((item) => LabTest.fromJson(item)).toList();
-          notifyListeners();
-        } else {
-          debugPrint('Response data is null.');
-        }
+        final jsonData = response.data as List; // Parse directly as a list
+        final labTests = jsonData.map((e) {
+          return LabTest(
+            id: e['id'],
+            name: e['name'],
+            description: e['description'],
+            image: e['image'],
+          );
+        }).toList();
+        _labTests = labTests;
+        notifyListeners();
+        isLoading = false;
       } else {
-        debugPrint('Error fetching lab tests. Status code: ${response.statusCode}');
-        debugPrint('Response data: ${response.data}');
+        isLoading = false;
+        print("Failed to load lab tests: ${response.statusCode}");
       }
-    } on DioError catch (error) {
-      debugPrint('DioError: $error');
-    } catch (e) {
-      debugPrint("Error: $e");
+    } catch (error) {
+      print("Error fetching lab tests: $error");
+      isLoading = false;
     }
-    return _labTests;
   }
-
-
 }
+
+
+
+// Future<List<LabTest>> getAllLabTests() async {
+  //   try {
+  //     final response = await _dio.get(
+  //       '${apiBaseUrl}/api/labTests/',
+  //       options: Options(
+  //         headers: {
+  //           'Authorization': 'Bearer ',
+  //         },
+  //       ),
+  //     );
+  //     final data = response.data;
+  //     print(data);
+  //     if (data is Map && data.containsKey('data')) {
+  //       final List<dynamic> labTestsData = data['data'];
+  //       final List<LabTest> getAllLabTests = [];
+  //
+  //       for (var labTestMap in labTestsData) {
+  //         getAllLabTests.add(LabTest(
+  //           id: labTestMap['id'],
+  //           name: labTestMap['name'],
+  //           description: labTestMap['description'],
+  //           image: labTestMap['image'],
+  //         ));
+  //       }
+  //       _labTests = getAllLabTests;
+  //       notifyListeners();
+  //       return _labTests;
+  //     }
+  //   } catch (error) {
+  //     print("Error fetching lab tests: $error");
+  //     throw error; // Rethrow the error so you can catch it in the FutureBuilder
+  //   }
+  //
+  //   return _labTests; // Return an empty list if no data is found
+  // }
 
 
